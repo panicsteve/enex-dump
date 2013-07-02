@@ -1,5 +1,7 @@
 <?php 
 
+// enex-dump by Steven Frank (@stevenf) <http://stevenf.com/>
+//
 // This script takes an Evernote export (ENEX) file as input
 // and exports each individual note as a plain-text file in the
 // specified output folder.
@@ -33,12 +35,12 @@ $nodes = array();
 
 if ( !($fp = fopen($file, "r")) ) 
 { 
-    die("could not open XML input"); 
+	die("could not open XML input"); 
 } 
 
 while ( $getline = fread($fp, 4096) ) 
 { 
-    $data = $data . $getline; 
+	$data = $data . $getline; 
 } 
 
 $count = 0; 
@@ -46,16 +48,16 @@ $pos = 0;
 
 while ( $node = getElementByName($data, "<note>", "</note>") ) 
 { 
-    $nodes[$count] = $node; 
-    $count++; 
-    $data = substr($data, $pos); 
+	$nodes[$count] = $node; 
+	$count++; 
+	$data = substr($data, $pos); 
 } 
 
 for ( $i = 0; $i < $count; $i++) 
 { 
 	$title = cleanup(getElementByName($nodes[$i], "<title>", "</title>")); 
 	$content = cleanup(getElementByName($nodes[$i], "<content>", "</content>"));
-	
+
 	file_put_contents("$outdir/$title.$ext", $title . "\n\n" . $content);
 } 
 
@@ -64,24 +66,24 @@ exit;
 
 function getElementByName($xml, $start, $end) 
 { 
-    global $pos; 
+	global $pos; 
 
-    $startpos = strpos($xml, $start); 
-    
-    if ( $startpos === false ) 
-    { 
-        return false; 
-    } 
-    
-    $endpos = strpos($xml, $end); 
-    $endpos = $endpos + strlen($end);    
-    $pos = $endpos; 
-    $endpos = $endpos - $startpos; 
-    $endpos = $endpos - strlen($end); 
-    $tag = substr($xml, $startpos, $endpos); 
-    $tag = substr($tag, strlen($start)); 
+	$startpos = strpos($xml, $start); 
 
-    return $tag;
+	if ( $startpos === false ) 
+	{ 
+		return false; 
+	} 
+
+	$endpos = strpos($xml, $end); 
+	$endpos = $endpos + strlen($end);    
+	$pos = $endpos; 
+	$endpos = $endpos - $startpos; 
+	$endpos = $endpos - strlen($end); 
+	$tag = substr($xml, $startpos, $endpos); 
+	$tag = substr($tag, strlen($start)); 
+
+	return $tag;
 } 
 
 function cleanup($str)
@@ -90,7 +92,7 @@ function cleanup($str)
 	$str = preg_replace('/\]\]>$/', '', $str);
 	$str = trim($str);
 	$str = html_entity_decode($str);
-	
+
 	return $str;
 }
 
