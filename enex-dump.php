@@ -1,5 +1,6 @@
 <?php
 
+//
 // enex-dump by Steven Frank (@stevenf) <http://stevenf.com/>
 //
 // This script takes an Evernote export (ENEX) file as input
@@ -21,11 +22,20 @@
 // Invoke like so:
 //
 // php enex-dump.php
+//
+// By default, we look for an input file named "My Notes.enex",
+// but you can supply an additional parameter to override this:
+//
+// php enex-dump.php allnotes.enex
+//
 
-if ( $argc > 1 && file_exists( $argv[1] ) ) {
-  $file = $argv[1];
-} else {
-  $file = "My Notes.enex"; // Path of default input file
+if ( $argc > 1 ) 
+{
+	$file = $argv[1];
+} 
+else 
+{
+	$file = "My Notes.enex"; // Path of default input file
 }
 
 $outdir = "output"; // Path of output folder
