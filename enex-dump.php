@@ -73,15 +73,15 @@ for ( $i = 0; $i < $count; $i++)
 	$title = cleanup(getElementByName($nodes[$i], "<title>", "</title>"));
 	$content = cleanup(getElementByName($nodes[$i], "<content>", "</content>"));
 
-  // sanitize the / in titles for filenames
-  $outfile = sprintf( '%s/%s.%s', $outdir, str_replace( '/', '-', $title ), $ext );
+	// sanitize the / in titles for filenames
 
-  // echo the filename
-  echo $outfile . PHP_EOL;
+	$outfile = sprintf('%s/%s.%s', $outdir, str_replace('/', '-', $title), $ext);
 
-  // if ( file_exists( $outfile ) ) continue;
+	// echo the filename
 
-	file_put_contents( $outfile, $title . "\n\n" . $content );
+	echo $outfile . PHP_EOL;
+
+	file_put_contents($outfile, $title . "\n\n" . $content);
 }
 
 exit;
