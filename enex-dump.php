@@ -74,9 +74,7 @@ for ( $i = 0; $i < $count; $i++)
 	$content = cleanup(getElementByName($nodes[$i], "<content>", "</content>"));
 
 	// Obtain note creation timestamp
-	$timestamp = cleanup(getElementByName($nodes[$i], "<updated>", "</updated>")); // From .enex file: 20150407T152900Z
-	$timestamp = str_replace(array("T", "Z"), "", $timestamp); // 20150407T152900Z => 20150407152900
-	$timestamp = substr_replace($timestamp, '.', -2, 0); // Compatible with `touch -t` 20150407152900 => 201504071529.00
+	$timestamp = cleanup(getElementByName($nodes[$i], "<updated>", "</updated>"));
 
 	// sanitize the / in titles for filenames
 
@@ -87,7 +85,7 @@ for ( $i = 0; $i < $count; $i++)
 	echo $outfile . PHP_EOL;
 
 	file_put_contents($outfile, $title . "\n\n" . $content);
-	system('touch -t ' . $timestamp . ' "' . $outfile . '"'); // Change output file timestamp to match note creation timestamp
+	touch($outfile, strtotime($timestamp)); // Change output file timestamp to match note creation timestamp
 }
 
 exit;
