@@ -73,6 +73,9 @@ for ( $i = 0; $i < $count; $i++)
 	$title = cleanup(getElementByName($nodes[$i], "<title>", "</title>"));
 	$content = cleanup(getElementByName($nodes[$i], "<content>", "</content>"));
 
+	// Obtain note creation timestamp
+	$timestamp = cleanup(getElementByName($nodes[$i], "<updated>", "</updated>"));
+
 	// sanitize the / in titles for filenames
 
 	$outfile = sprintf('%s/%s.%s', $outdir, str_replace('/', '-', $title), $ext);
@@ -82,6 +85,7 @@ for ( $i = 0; $i < $count; $i++)
 	echo $outfile . PHP_EOL;
 
 	file_put_contents($outfile, $title . "\n\n" . $content);
+	touch($outfile, strtotime($timestamp)); // Change output file timestamp to match note creation timestamp
 }
 
 exit;
